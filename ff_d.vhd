@@ -1,12 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity ff_d is
-	port(
-		d: in std_logic;
-		clk: in std_logic;
-		q: out std_logic
-	);
+entity ff_d is port(
+	d: in std_logic;
+	clk: in std_logic;
+	q: out std_logic
+);
 end ff_d;
 
 architecture behavior of ff_d is
