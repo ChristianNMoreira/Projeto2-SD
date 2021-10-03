@@ -23,11 +23,11 @@ signal q1, q0: std_logic;
 
 begin
 	d1 <= (q0 and not(t)) or (q1 and not(q0));
-	d0 <= (q1 + q0) xor t;
+	d0 <= (q1 or q0) xor t;
 
 	FF1: ff_d port map (d1, clk, q1);
 	FF0: ff_d port map (d0, clk, q0);
 
-	c <= (not(q1) + q0) xor t;
+	c <= (not(q1) or q0) xor t;
 	r <= q1 and q0 and t;
 end structural;

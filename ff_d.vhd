@@ -15,10 +15,12 @@ begin
 	--	contant delay: time:= 500 ps;
 	begin
 		if(clk'event and clk='1') then
-			ds <= d after delay;
+			--ds <= d after delay;
+			ds <= d;
 		end if;
 	end process;
 	process(ds)
+	begin
 		q <= ds;
 	end process;
 end behavior;
