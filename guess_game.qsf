@@ -52,3 +52,5 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
 set_global_assignment -name VHDL_FILE guess_game.vhd
+set_global_assignment -name VHDL_FILE ff_d.vhd
+set_global_assignment -name VHDL_FILE seq_S.vhd
