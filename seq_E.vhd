@@ -5,6 +5,7 @@ entity seq_E is
 	port (
 		c: in std_logic;
 		clk: in std_logic;
+		e2, e1, e0: out std_logic;
 		z: out std_logic -- alto com 5 erros
 	);
 end seq_E;
@@ -30,4 +31,7 @@ begin
 	FF0: ff_d port map (d0, clk, q0);
 
 	z <= q2 and c;
+	e2 <= q2;
+	e1 <= q1;
+	e0 <= q0;
 end structural;
