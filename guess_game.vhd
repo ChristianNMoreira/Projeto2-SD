@@ -32,16 +32,18 @@ component ff_d port (
 );
 end component;
 
-signal d0, q0: std_logic;
+signal d0, q0, d1, q1: std_logic;
 signal c: std_logic;
 signal e2, e1, e0: std_logic;
 
 begin
 	seqS0: seq_S port map (t, clk, c, d0);
-	seqE0: seq_E port map (c, clk, e2, e1, e0, e);
+	seqE0: seq_E port map (c, clk, e2, e1, e0, d1);
 	FF0: ff_d port map (d0, clk, q0);
+	FF1: ff_d port map (d1, clk, q1);
 
 	r <= q0;
+	e <= q1;
 	c2 <= e2;
 	c1 <= e1;
 	c0 <= e0;
