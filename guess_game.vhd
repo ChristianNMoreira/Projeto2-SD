@@ -6,6 +6,7 @@ entity guess_game is port(
 	clk: in std_logic;
 	r: out std_logic; -- indica vitória
 	e: out std_logic; -- indica derrota
+	s1, s0: out std_logic; -- conferir estados
 	c0, c1, c2: out std_logic -- contagem de erros
 );
 end guess_game;
@@ -15,6 +16,7 @@ component seq_S port (
 	t: in std_logic;
 	clk: in std_logic;
 	c: out std_logic;
+	s1, s0: out std_logic; -- conferir estados
 	r: out std_logic
 );
 end component;
@@ -37,7 +39,7 @@ signal c: std_logic;
 signal e2, e1, e0: std_logic;
 
 begin
-	seqS0: seq_S port map (t, clk, c, d0);
+	seqS0: seq_S port map (t, clk, c, s1, s0, d0);
 	seqE0: seq_E port map (c, clk, e2, e1, e0, d1);
 	FF0: ff_d port map (d0, clk, q0);
 	FF1: ff_d port map (d1, clk, q1);

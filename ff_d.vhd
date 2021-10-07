@@ -12,7 +12,7 @@ architecture behavior of ff_d is
 signal ds: std_logic;
 begin
 	process(clk)
-	--	contant delay: time:= 500 ps;
+	--	constant delay: time:= 500 ps;
 	begin
 		if(clk'event and clk='1') then
 			--ds <= d after delay;
