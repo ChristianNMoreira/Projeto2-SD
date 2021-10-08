@@ -33,6 +33,6 @@ begin
 
 	s1 <= q1; -- conferir estados
 	s0 <= q0; -- conferir estados
-	c <= (not(q1) or q0) xnor t;
+	c <= (not(q1) and q0) xnor t;
 	r <= q1 and q0 and t;
 end structural;

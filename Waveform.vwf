@@ -24,6 +24,7 @@ quit -f
 
 
 
+
 </modelsim_script>
 <modelsim_script_timing>onerror {exit -code 1}
 vlib work
@@ -42,6 +43,7 @@ proc simTimestamp {} {
 after 2500 simTimestamp
 run -all
 quit -f
+
 
 
 
@@ -174,6 +176,16 @@ SIGNAL("s1")
 	PARENT = "";
 }
 
+SIGNAL("cc")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = OUTPUT;
+	PARENT = "";
+}
+
 TRANSITION_LIST("c0")
 {
 	NODE
@@ -284,6 +296,15 @@ TRANSITION_LIST("s1")
 	}
 }
 
+TRANSITION_LIST("cc")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 500.0;
+	}
+}
+
 DISPLAY_LINE
 {
 	CHANNEL = "c0";
@@ -313,7 +334,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "clk";
+	CHANNEL = "cc";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 3;
@@ -322,7 +343,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "e";
+	CHANNEL = "clk";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 4;
@@ -331,7 +352,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "r";
+	CHANNEL = "e";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 5;
@@ -340,7 +361,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "t";
+	CHANNEL = "r";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 6;
@@ -349,7 +370,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "s0";
+	CHANNEL = "t";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 7;
@@ -358,10 +379,19 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "s1";
+	CHANNEL = "s0";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 8;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "s1";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 9;
 	TREE_LEVEL = 0;
 }
 

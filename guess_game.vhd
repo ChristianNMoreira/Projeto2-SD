@@ -7,6 +7,7 @@ entity guess_game is port(
 	r: out std_logic; -- indica vitória
 	e: out std_logic; -- indica derrota
 	s1, s0: out std_logic; -- conferir estados
+	cc: out std_logic;
 	c0, c1, c2: out std_logic -- contagem de erros
 );
 end guess_game;
@@ -61,4 +62,5 @@ begin
 	c0 <= e0;
 	s1 <= ss1;
 	s0 <= ss0;
+	cc <= c;
 end structural;
