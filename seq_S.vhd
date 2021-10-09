@@ -8,7 +8,7 @@ entity seq_S is
 		reset: in std_logic;
 		preset: in std_logic;
 		c: out std_logic; -- erro
-		s1, s0: out std_logic; -- conferir estados
+		s2, s1, s0: out std_logic; -- conferir estados
 		r: out std_logic -- sequência correta
 	);
 end seq_S;
@@ -23,18 +23,21 @@ component ff_d port (
 );
 end component;
 
-signal d1, d0: std_logic;
-signal q1, q0: std_logic;
+signal d2, d1, d0: std_logic;
+signal q2, q1, q0: std_logic;
 
 begin
-	d1 <= (q0 and not(t)) or (q1 and not(q0));
-	d0 <= (q1 and q0) xor t;
+	d2 <= (q2 and not(q1) and not(q0)) or (not(q2) and q1 and q0 and t);
+	d1 <= not(q2) and ((q0 and not(t)) or (q1 and not(q0)));
+	d0 <= not(q2) and ((q1 and q0) xor t);
+	
+	FF2: ff_d port map (d2, clk, reset, preset, q2);
+	FF1: ff_d port map (d1, clk, reset, preset, q1);
+	FF0: ff_d port map (d0, clk, reset, preset, q0);
 
-	FF1: ff_d port map (d1, clk, reset, q1);
-	FF0: ff_d port map (d0, clk, reset, q0);
-
+	s2 <= q2; -- conferir estados
 	s1 <= q1; -- conferir estados
 	s0 <= q0; -- conferir estados
-	c <= (not(q1) and q0) xnor t;
-	r <= q1 and q0 and t;
+	c <= not(q2) and ((not(q1) and q0) xnor t);
+	r <= q2;
 end structural;

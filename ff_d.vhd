@@ -18,7 +18,7 @@ begin
 	begin
 		if (reset='1') then
 			ds <= '0';
-		elsif (preset='1') then
+		elsif (preset='1' and reset='0') then
 			ds <= '1';
 		elsif (clk'event and clk='1') then
 			--ds <= d after delay;

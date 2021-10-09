@@ -4,14 +4,11 @@ use ieee.std_logic_1164.all;
 -- t: SW(0)
 -- clk: !KEY(0)
 -- rst: !KEY(1)
--- r: LEDG(1)
--- e: LEDG(0)
--- s1, s0: LEDR[1 / 0]
--- c2, c1, c0: LEDR[5 / 3]
+-- pre: !KEY(2)
 
 entity guess_game is port(
 	SW: in std_logic_vector(0 downto 0);
-	KEY: in std_logic_vector(1 downto 0);
+	KEY: in std_logic_vector(2 downto 0);
 	LEDR: out std_logic_vector(4 downto 0);
 	HEX0, HEX1, HEX2, HEX3, HEX7: out std_logic_vector(6 downto 0)
 );
@@ -61,11 +58,11 @@ component hex_game port (
 );
 end component;
 
-signal d0, q0, d1, q1: std_logic;         -- flip flops
+signal r, e: std_logic ;                  -- G ou P
 signal c: std_logic;                      -- contagem de erros
 signal e2, e1, e0: std_logic;             -- estados circuito sequencial E
-signal ss1, ss0: std_logic;               -- estados circuito sequencial S
-signal rsts, rste, rstff: std_logic;      -- clear dos circuitos sequenciais
+signal ss2, ss1, ss0: std_logic;          -- estados circuito sequencial S
+signal rst: std_logic;                    -- clear dos circuitos sequenciais
 signal pre: std_logic;                    -- preset dos circuitos sequenciais
 
 signal t, clk: std_logic;
@@ -73,17 +70,12 @@ signal t, clk: std_logic;
 begin
 	t <= SW(0);
 	clk <= not(KEY(0));
-	preset <= not(KEY(1));
+	rst <= not(KEY(1));
+	pre <= not(KEY(2));
 
-	seqS0: seq_S port map (t, clk, rst, pre, c, ss1, ss0, d0);
-	seqE0: seq_E port map (c, clk, rst, pre, e2, e1, e0, d1);
-	FF0: ff_d port map (d0, clk, rst, pre, q0);
-	FF1: ff_d port map (d1, clk, rst, pre, q1);
+	seqS0: seq_S port map (t, clk, rst, pre, c, ss1, ss0, r);
+	seqE0: seq_E port map (c, clk, rst, pre, e2, e1, e0, e);
 
-	--rsts <= q1 and e2 and e1 and e0;
-	--rste <= q0 and ss1 and ss0;
-	--rstff <= '0';
-
-	HX7: hex_game port map (q0, q1, HEX7);
+	HX7: hex_game port map (r, e, HEX7);
 	VIDAS: decoder port map (e2, e1, e0, LEDR(4), LEDR(3), LEDR(2), LEDR(1), LEDR(0));
 end structural;
