@@ -6,6 +6,7 @@ entity seq_S is
 		t: in std_logic; -- tentativa
 		clk: in std_logic;
 		reset: in std_logic;
+		preset: in std_logic;
 		c: out std_logic; -- erro
 		s1, s0: out std_logic; -- conferir estados
 		r: out std_logic -- sequência correta
@@ -17,6 +18,7 @@ component ff_d port (
 	d: in std_logic;
 	clk: in std_logic;
 	reset: in std_logic;
+	preset: in std_logic;
 	q: out std_logic
 );
 end component;

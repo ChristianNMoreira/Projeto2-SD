@@ -6,6 +6,7 @@ entity seq_E is
 		c: in std_logic;
 		clk: in std_logic;
 		reset: in std_logic;
+		preset: in std_logic;
 		e2, e1, e0: out std_logic;
 		z: out std_logic -- alto com 5 erros
 	);
@@ -16,6 +17,7 @@ component ff_d port (
 	d: in std_logic;
 	clk: in std_logic;
 	reset: in std_logic;
+	preset: in std_logic;
 	q: out std_logic
 );
 end component;
