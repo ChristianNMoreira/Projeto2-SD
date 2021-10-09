@@ -21,7 +21,7 @@ component seq_S port (
 	reset: in std_logic;
 	preset: in std_logic;
 	c: out std_logic;
-	s1, s0: out std_logic; -- conferir estados
+	s2, s1, s0: out std_logic; -- conferir estados
 	r: out std_logic
 );
 end component;
@@ -73,7 +73,7 @@ begin
 	rst <= not(KEY(1));
 	pre <= not(KEY(2));
 
-	seqS0: seq_S port map (t, clk, rst, pre, c, ss1, ss0, r);
+	seqS0: seq_S port map (t, clk, rst, pre, c, ss2, ss1, ss0, r);
 	seqE0: seq_E port map (c, clk, rst, pre, e2, e1, e0, e);
 
 	HX7: hex_game port map (r, e, HEX7);
