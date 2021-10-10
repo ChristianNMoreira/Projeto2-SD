@@ -6,8 +6,9 @@ entity seq_S is
 		t: in std_logic; -- tentativa
 		clk: in std_logic;
 		reset: in std_logic;
+		en: in std_logic;
 		c: out std_logic; -- erro
-		s1, s0: out std_logic; -- conferir estados
+		s2, s1, s0: out std_logic; -- conferir estados
 		r: out std_logic -- sequência correta
 	);
 end seq_S;
@@ -17,22 +18,26 @@ component ff_d port (
 	d: in std_logic;
 	clk: in std_logic;
 	reset: in std_logic;
+	en: in std_logic;
 	q: out std_logic
 );
 end component;
 
-signal d1, d0: std_logic;
-signal q1, q0: std_logic;
+signal d2, d1, d0: std_logic;
+signal q2, q1, q0: std_logic;
 
 begin
-	d1 <= (q0 and not(t)) or (q1 and not(q0));
-	d0 <= (q1 and q0) xor t;
+	d2 <= (q2 and not(q1) and not(q0)) or (not(q2) and q1 and q0 and t);
+	d1 <= not(q2) and ((q0 and not(t)) or (q1 and not(q0)));
+	d0 <= not(q2) and ((q1 and q0) xor t);
+	
+	FF2: ff_d port map (d2, clk, reset, en, q2);
+	FF1: ff_d port map (d1, clk, reset, en, q1);
+	FF0: ff_d port map (d0, clk, reset, en, q0);
 
-	FF1: ff_d port map (d1, clk, reset, q1);
-	FF0: ff_d port map (d0, clk, reset, q0);
-
+	s2 <= q2; -- conferir estados
 	s1 <= q1; -- conferir estados
 	s0 <= q0; -- conferir estados
-	c <= (not(q1) and q0) xnor t;
-	r <= q1 and q0 and t;
+	c <= not(q2) and ((not(q1) and q0) xnor t);
+	r <= q2;
 end structural;
