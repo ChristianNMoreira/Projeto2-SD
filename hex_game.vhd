@@ -10,7 +10,7 @@ entity hex_game is
 end hex_game;
 
 architecture hardware of hex_game is
-signal X: std_logic_vector(2 downto 0);
+signal X: std_logic_vector(1 downto 0);
 begin
 	X(1) <= r;
 	X(0) <= z;

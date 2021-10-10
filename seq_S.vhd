@@ -6,7 +6,7 @@ entity seq_S is
 		t: in std_logic; -- tentativa
 		clk: in std_logic;
 		reset: in std_logic;
-		preset: in std_logic;
+		en: in std_logic;
 		c: out std_logic; -- erro
 		s2, s1, s0: out std_logic; -- conferir estados
 		r: out std_logic -- sequência correta
@@ -18,7 +18,7 @@ component ff_d port (
 	d: in std_logic;
 	clk: in std_logic;
 	reset: in std_logic;
-	preset: in std_logic;
+	en: in std_logic;
 	q: out std_logic
 );
 end component;
@@ -31,9 +31,9 @@ begin
 	d1 <= not(q2) and ((q0 and not(t)) or (q1 and not(q0)));
 	d0 <= not(q2) and ((q1 and q0) xor t);
 	
-	FF2: ff_d port map (d2, clk, reset, preset, q2);
-	FF1: ff_d port map (d1, clk, reset, preset, q1);
-	FF0: ff_d port map (d0, clk, reset, preset, q0);
+	FF2: ff_d port map (d2, clk, reset, en, q2);
+	FF1: ff_d port map (d1, clk, reset, en, q1);
+	FF0: ff_d port map (d0, clk, reset, en, q0);
 
 	s2 <= q2; -- conferir estados
 	s1 <= q1; -- conferir estados
