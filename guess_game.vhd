@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
--- t: SW[9/0]
+-- tentativa: SW[9/0]
 -- clk: !KEY(0)
 -- rst: !KEY(1)
 
@@ -68,28 +68,28 @@ component mux_4x1 port (
 );
 end component;
 
-signal r, z: std_logic ;                        -- Ganhou (r) ou Perdeu (z)
-signal c: std_logic;                            -- contagem de erros
-signal e2, e1, e0: std_logic;                   -- estados circuito sequencial E - conta erros
-signal s2, s1, s0: std_logic;                   -- estados circuito sequencial S - conta tentativas
-signal rst: std_logic;                          -- clear dos circuitos sequenciais
-signal ens, ene: std_logic;                     -- enable dos circuitos sequenciais S(ens) e E(ene)
-signal p3, p2, p1, p0: std_logic_vector(9 downto 0);               -- dígitos
-signal comp0, comp1, comp2, comp3: std_logic;   -- comparadores
+signal r, z: std_logic ;                                 -- Ganhou (r) ou Perdeu (z)
+signal c: std_logic;                                     -- contagem de erros
+signal e2, e1, e0: std_logic;                            -- estados circuito sequencial E - conta erros
+signal s2, s1, s0: std_logic;                            -- estados circuito sequencial S - conta tentativas
+signal rst: std_logic;                                   -- clear dos circuitos sequenciais
+signal ens, ene: std_logic;                              -- enable dos circuitos sequenciais S(ens) e E(ene)
+signal p3, p2, p1, p0: std_logic_vector(9 downto 0);     -- dígitos corretos
+signal comp0, comp1, comp2, comp3: std_logic;            -- comparadores
 
-signal t, clk: std_logic;
+signal t: std_logic;                                     -- indica acerto ou erro
+signal clk: std_logic;
 
 begin
-	--t <= SW(0);
 	clk <= not(KEY(0));
 	rst <= not(KEY(1));
 	ens <= not(z);
 	ene <= not(r);
 
 	p0 <= "0000000010";
-	p1 <= "0000000100";
-	p2 <= "0000001000";
-	p3 <= "0000010000";
+	p1 <= "0100000000";
+	p2 <= "1000000000";
+	p3 <= "0100000000";
 
 	comparador0: comparator_10bit port map (SW, p0, comp0);
 	comparador1: comparator_10bit port map (SW, p1, comp1);
