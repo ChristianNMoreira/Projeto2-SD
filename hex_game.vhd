@@ -15,6 +15,6 @@ begin
 	X(1) <= r;
 	X(0) <= z;
 	H <= "0010000" when (X="10") else  -- G
-		  "0001010" when (X="01") else  -- P
+		  "0001100" when (X="01") else  -- P
 		  "0111111";                    -- -
 end hardware;

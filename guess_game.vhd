@@ -1,12 +1,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
--- t: SW(0)
+-- t: SW[9/0]
 -- clk: !KEY(0)
 -- rst: !KEY(1)
 
 entity guess_game is port(
-	SW: in std_logic_vector(0 downto 0);
+	SW: in std_logic_vector(9 downto 0);
 	KEY: in std_logic_vector(1 downto 0);
 	LEDR: out std_logic_vector(4 downto 0);
 	HEX0, HEX1, HEX2, HEX3, HEX7: out std_logic_vector(6 downto 0)
@@ -56,27 +56,52 @@ component hex_game port (
 	H: out std_logic_vector(6 downto 0)
 );
 end component;
+component comparator_10bit port (
+	A, B: in std_logic_vector(9 downto 0);
+	E: out std_logic
+);
+end component;
+component mux_4x1 port (
+	A,B,C,D : in std_logic;
+   s1,s0: in std_logic;
+   Z: out std_logic
+);
+end component;
 
-signal r, z: std_logic ;                  -- Ganhou (r) ou Perdeu (z)
-signal c: std_logic;                      -- contagem de erros
-signal e2, e1, e0: std_logic;             -- estados circuito sequencial E - conta erros
-signal s2, s1, s0: std_logic;             -- estados circuito sequencial S - conta tentativas
-signal rst: std_logic;                    -- clear dos circuitos sequenciais
-signal ens, ene: std_logic;               -- enable dos circuitos sequenciais S(ens) e E(ene)
+signal r, z: std_logic ;                        -- Ganhou (r) ou Perdeu (z)
+signal c: std_logic;                            -- contagem de erros
+signal e2, e1, e0: std_logic;                   -- estados circuito sequencial E - conta erros
+signal s2, s1, s0: std_logic;                   -- estados circuito sequencial S - conta tentativas
+signal rst: std_logic;                          -- clear dos circuitos sequenciais
+signal ens, ene: std_logic;                     -- enable dos circuitos sequenciais S(ens) e E(ene)
+signal p3, p2, p1, p0: std_logic_vector(9 downto 0);               -- dígitos
+signal comp0, comp1, comp2, comp3: std_logic;   -- comparadores
 
 signal t, clk: std_logic;
 
 begin
-	t <= SW(0);
+	--t <= SW(0);
 	clk <= not(KEY(0));
 	rst <= not(KEY(1));
-	ens <= not(e);
+	ens <= not(z);
 	ene <= not(r);
+
+	p0 <= "0000000010";
+	p1 <= "0000000100";
+	p2 <= "0000001000";
+	p3 <= "0000010000";
+
+	comparador0: comparator_10bit port map (SW, p0, comp0);
+	comparador1: comparator_10bit port map (SW, p1, comp1);
+	comparador2: comparator_10bit port map (SW, p2, comp2);
+	comparador3: comparator_10bit port map (SW, p3, comp3);
+
+	MUX: mux_4x1 port map (comp0, comp1, comp2, comp3, s1, s0, t);
 
 	seqS0: seq_S port map (t, clk, rst, ens, c, s2, s1, s0, r);
 	seqE0: seq_E port map (c, clk, rst, ene, e2, e1, e0, z);
 
-	HX7: hex_game port map (r, e, HEX7);
+	HX7: hex_game port map (r, z, HEX7);
 	HXPALAVRA: hex_palavra port map (s2, s1, s0, HEX3, HEX2, HEX1, HEX0);
 	VIDAS: decoder port map (e2, e1, e0, LEDR(4), LEDR(3), LEDR(2), LEDR(1), LEDR(0));
 end structural;
